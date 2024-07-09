@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 
-from posts.forms import PostForm
+from posts.forms import PostForm, CommentForm
 from posts.models import Post
 
 
@@ -9,6 +10,7 @@ def home_view(request):
     users = User.objects.all()
     posts = Post.objects.all().order_by('-created_at')
     form = PostForm()
+    comment_form = CommentForm()
 
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -18,8 +20,28 @@ def home_view(request):
             post.save()
             return redirect('home')
 
-    return render(request, 'posts/home.html', {'posts': posts, 'form': form,'users': users})
+    return render(request, 'posts/home.html',
+                  {'posts': posts,
+                   'form': form,
+                   'users': users,
+                   'comment_form':comment_form
+                   })
 
 
 def post_view(request):
     return render(request,  "posts/post.html")
+
+@login_required
+def add_comment(request,post_id):
+    post = get_object_or_404(Post,id=post_id)
+    print(request.POST)
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            return redirect("home")
+        else:
+            return redirect("home")
