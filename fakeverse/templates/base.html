@@ -84,10 +84,25 @@
 
   </div>
 </nav>
-
+  {% if messages %}
+  <div class="messages">
+      {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">
+          {{ message }}
+      </div>
+      {% endfor %}
+  </div>
+  {% endif %}
   {% block content %}
   {% endblock content %}
 
     <script src="{% static 'js/mdb.umd.min.js' %}"></script>
   </body>
+  <script>
+      $(document).ready(function() {
+          setTimeout(function() {
+              $('.messages .alert').alert('close');
+          }, 3000);
+      });
+  </script>
 </html>

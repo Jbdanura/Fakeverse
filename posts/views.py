@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-
+from django.contrib import messages
 from posts.forms import PostForm, CommentForm
 from posts.models import Post
 
@@ -42,6 +42,19 @@ def add_comment(request,post_id):
             comment.author = request.user
             comment.post = post
             comment.save()
+            messages.success(request, "Comment added")
             return redirect("home")
-        else:
-            return redirect("home")
+    return redirect("home")
+
+@login_required
+def like_post(request,post_id):
+    post = get_object_or_404(Post,id=post_id)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+        messages.success(request, "Post unliked")
+    else:
+        post.likes.add(request.user)
+        messages.success(request, "Post liked")
+    return redirect("home")
+
+

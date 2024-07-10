@@ -16,8 +16,15 @@
         <div class="box-body">
           <p>{{post.content}}</p>
 
-          <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
-          <span class="pull-right text-muted">{{post.likes.count}} likes - {{post.comments.count}} comments</span>
+          <a href="{% url 'like_post' post.id %}"><button type="button" class="btn btn-default btn-xs">
+            <i class="fa fa-thumbs-o-up"></i>
+            {% if user in post.likes.all %}
+            Unlike
+            {% else %}
+            Like
+            {% endif %}
+          </button></a>
+          <span class="pull-right text-muted">{{post.likes.count}} like{{post.likes.count|pluralize}} - {{post.comments.count}} comment{{post.likes.count|pluralize}}</span>
         </div>
         <div class="box-footer box-comments">
           {% for comment in post.comments.all %}
