@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -27,9 +28,16 @@ def home_view(request):
                    'comment_form':comment_form
                    })
 
-
-def post_view(request):
-    return render(request,  "posts/post.html")
+@login_required
+def create_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('home')
+    return redirect('home')
 
 @login_required
 def add_comment(request,post_id):
@@ -58,3 +66,16 @@ def like_post(request,post_id):
     return redirect("home")
 
 
+def get_more_comments(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    offset = int(request.GET.get('offset', 0))
+    limit = 5
+    comments = post.comments.all()[offset:offset + limit]
+
+    comments_data = [{
+        'author': comment.author.username,
+        'content': comment.content,
+        'updated_at': comment.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+    } for comment in comments]
+
+    return JsonResponse({'comments': comments_data})
