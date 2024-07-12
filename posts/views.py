@@ -65,6 +65,30 @@ def like_post(request,post_id):
         messages.success(request, "Post liked")
     return redirect("home")
 
+@login_required
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        if post.author != request.user:
+            messages.error(request, "You are not authorized to edit this post.")
+            return redirect('home')
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Post updated successfully.')
+            return redirect('home')
+    else:
+        return redirect("home")
+
+@login_required
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if post.author != request.user:
+        messages.error(request, "You are not authorized to delete this post.")
+        return redirect('home')
+    post.delete()
+    messages.success(request, "Post deleted successfully.")
+    return redirect('home')
 
 def get_more_comments(request, post_id):
     post = get_object_or_404(Post, id=post_id)
