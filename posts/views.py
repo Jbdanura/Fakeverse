@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from posts.forms import PostForm, CommentForm
-from posts.models import Post
+from posts.models import Post, Comment
 
 
 def home_view(request):
@@ -90,16 +90,15 @@ def delete_post(request, post_id):
     messages.success(request, "Post deleted successfully.")
     return redirect('home')
 
-def get_more_comments(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    offset = int(request.GET.get('offset', 0))
-    limit = 5
-    comments = post.comments.all()[offset:offset + limit]
 
-    comments_data = [{
-        'author': comment.author.username,
-        'content': comment.content,
-        'updated_at': comment.updated_at.strftime('%Y-%m-%d %H:%M:%S')
-    } for comment in comments]
 
-    return JsonResponse({'comments': comments_data})
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if comment.author != request.user:
+        messages.error(request, "You are not authorized to delete this comment.")
+        return redirect('home')
+    comment.delete()
+    messages.success(request, "Comment deleted successfully")
+    return redirect('home')
