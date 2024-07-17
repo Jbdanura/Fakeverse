@@ -5,13 +5,16 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from posts.forms import PostForm, CommentForm
 from posts.models import Post, Comment
-
+from django.db.models import Count
+import random
 
 def home_view(request):
     users = User.objects.all()
     posts = Post.objects.all().order_by('-created_at')
     form = PostForm()
     comment_form = CommentForm()
+    new_users = User.objects.order_by('-date_joined')[:5]
+    top_liked_posts = Post.objects.annotate(num_likes=Count('likes')).order_by('-num_likes')[:5]
 
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -25,7 +28,9 @@ def home_view(request):
                   {'posts': posts,
                    'form': form,
                    'users': users,
-                   'comment_form':comment_form
+                   'comment_form':comment_form,
+                   'new_users':new_users,
+                   'top_liked_posts':top_liked_posts
                    })
 
 @login_required
