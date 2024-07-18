@@ -8,4 +8,5 @@ urlpatterns = [
     path('accounts/signup/', SignupView.as_view(form_class=CustomSignupForm), name='account_signup'),
     path('profile/<str:username>/', view_profile, name='view_profile'),
     path('edit_profile/', edit_profile, name='edit_profile'),
+    path('search/', search_user, name='search_user'),
 ]

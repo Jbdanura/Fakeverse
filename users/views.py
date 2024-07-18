@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -29,3 +30,12 @@ def edit_profile(request):
     return render(request, 'users/edit_profile.html', {'form': form})
 
 
+def search_user(request):
+    query = request.GET.get('query')
+    if query:
+        user = User.objects.filter(username__iexact=query).first()
+        if user:
+            return redirect('view_profile', user.username)
+        else:
+            return render(request, 'user_not_found.html')
+    return redirect('home')

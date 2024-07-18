@@ -41,7 +41,9 @@ def create_post(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect('home')
+            next_url = request.GET.get('next')
+            if next_url:
+                return redirect(next_url)
     return redirect('home')
 
 @login_required
@@ -68,7 +70,9 @@ def like_post(request,post_id):
     else:
         post.likes.add(request.user)
         messages.success(request, "Post liked")
-    return redirect("home")
+    next_url = request.GET.get('next')
+    if next_url:
+        return redirect(next_url)
 
 @login_required
 def edit_post(request, post_id):

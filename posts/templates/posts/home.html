@@ -22,7 +22,7 @@
                 <div class="box-header with-border">
                     <div class="user-block">
                         <img class="img-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User Image">
-                        <span class="username"><a href="#">{{post.author.username}}</a></span>
+                        <span class="username"><a href="{% url 'view_profile' post.author.username %}">{{post.author.username}}</a></span>
                         <span class="description">{{post.updated_at}}</span>
                     </div>
                     {% if post.author == user %}
@@ -34,7 +34,7 @@
                 </div>
                 <div class="box-body">
                     <p>{{post.content}}</p>
-                    <a href="{% url 'like_post' post.id %}"><button type="button" class="btn btn-default btn-xs">
+                    <a href="{% url 'like_post' post.id %}?next={{ request.path }}"><button type="button" class="btn btn-default btn-xs">
                         <i class="fa fa-thumbs-o-up"></i>
                         {% if user in post.likes.all %}
                         Unlike
@@ -146,8 +146,10 @@
                     <div class="modal-body">
                         <ul class="list-group">
                             {% for user in post.likes.all %}
-                            <li class="list-group-item"><img class="img-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User Image" style="width:30px;margin-left:-5px">
-                                <span style="margin-left:5px">{{ user.username }}</span></li>
+                            <a href="{% url 'view_profile' user.username %}">
+                                <li class="list-group-item"><img class="img-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User Image" style="width:30px;">
+                                    <span>{{ user.username }}</span></li>
+                            </a>
                             {% endfor %}
                         </ul>
                     </div>
@@ -179,14 +181,14 @@
             <ul class="list-unstyled" style="margin-top: 30px">
                 {% for post in top_liked_posts %}
                 <div class="top-posts-container" style="margin-top: 20px">
-                    <a href="{% url 'view_profile' user.username %}">
+                    <a href="{% url 'view_profile' post.author.username %}">
                         <img class="mr-3 rounded-circle"
                          src="https://bootdey.com/img/Content/avatar/avatar{{ forloop.counter }}.png"
                          alt="User Image" width="50">
                     {{post.author.username}}
                     </a>
                     <p style="margin-top: 10px; color: grey;">{{post.likes.count}} like{{post.likes.count|pluralize}} </p>
-                    <a href="{% url 'view_profile' user.username %}" style="padding-bottom: 10px">{{ post.content|slice:":40" }}</a>
+                    <a href="{% url 'view_profile' post.author.username %}" style="padding-bottom: 10px">{{ post.content|slice:":40" }}</a>
                     <hr>
                 </div>
                 {% endfor %}
