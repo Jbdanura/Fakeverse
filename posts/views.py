@@ -11,22 +11,14 @@ import random
 def home_view(request):
     users = User.objects.all()
     posts = Post.objects.all().order_by('-created_at')
-    form = PostForm()
     comment_form = CommentForm()
     new_users = User.objects.order_by('-date_joined')[:5]
     top_liked_posts = Post.objects.annotate(num_likes=Count('likes')).order_by('-num_likes')[:5]
 
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('home')
+
 
     return render(request, 'posts/home.html',
                   {'posts': posts,
-                   'form': form,
                    'users': users,
                    'comment_form':comment_form,
                    'new_users':new_users,
@@ -37,8 +29,11 @@ def home_view(request):
 def create_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
+        print(request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
+            if request.FILES.get('image'):
+                post.image = request.FILES['image']
             post.author = request.user
             post.save()
             next_url = request.GET.get('next')
