@@ -1723,3 +1723,11 @@ select.form-control:not([size]):not([multiple]) {
     width: auto;
     padding: 0 7px;
 }
+.image-form{
+    background-color :#e1e1e1;
+    border: none;
+    margin-top: -10px;
+}
+.like-btn{
+    background-color:grey;
+}

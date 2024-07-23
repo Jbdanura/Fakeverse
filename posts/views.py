@@ -39,6 +39,10 @@ def create_post(request):
             next_url = request.GET.get('next')
             if next_url:
                 return redirect(next_url)
+        else:
+            messages.error(request,"Invalid post")
+            next_url = request.GET.get('next')
+            return redirect(next_url)
     return redirect('home')
 
 @login_required
@@ -53,7 +57,9 @@ def add_comment(request,post_id):
             comment.post = post
             comment.save()
             messages.success(request, "Comment added")
-            return redirect("home")
+            next_url = request.GET.get('next')
+            if next_url:
+                return redirect(next_url)
     return redirect("home")
 
 @login_required
@@ -61,7 +67,7 @@ def like_post(request,post_id):
     post = get_object_or_404(Post,id=post_id)
     if request.user in post.likes.all():
         post.likes.remove(request.user)
-        messages.success(request, "Post unliked")
+        messages.success(request, "Post disliked")
     else:
         post.likes.add(request.user)
         messages.success(request, "Post liked")
@@ -80,7 +86,9 @@ def edit_post(request, post_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Post updated successfully.')
-            return redirect('home')
+            next_url = request.GET.get('next')
+            if next_url:
+                return redirect(next_url)
     else:
         return redirect("home")
 
@@ -92,7 +100,11 @@ def delete_post(request, post_id):
         return redirect('home')
     post.delete()
     messages.success(request, "Post deleted successfully.")
-    return redirect('home')
+    next_url = request.GET.get('next')
+    if next_url:
+        return redirect(next_url)
+    else:
+        return redirect('home')
 
 
 
@@ -105,4 +117,8 @@ def delete_comment(request, comment_id):
         return redirect('home')
     comment.delete()
     messages.success(request, "Comment deleted successfully")
-    return redirect('home')
+    next_url = request.GET.get('next')
+    if next_url:
+        return redirect(next_url)
+    else:
+        return redirect('home')

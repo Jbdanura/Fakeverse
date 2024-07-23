@@ -29,20 +29,20 @@
             {% if user.is_authenticated %}
             <div class="mb-4" style="margin-top: 15px;">
                 <div class="box-body">
-                    <form method="post" enctype="multipart/form-data"  action="{% url 'create_post' %}?next={{ request.path }}" style="background-color:#e1e1e1;border: 1px solid #d6d6d6;">
+                    <form method="post" enctype="multipart/form-data"  action="{% url 'create_post' %}?next={{ request.path }}" style="background-color:#e1e1e1;border: 1px solid #d6d6d6;position:relative">
                         {% csrf_token %}
                         <div class="form-group">
                             <textarea name="content" class="form-control" rows="3" placeholder="Create new post"></textarea>
                         </div>
                         <div class="form-group">
-                            <input type="file" name="image" class="form-control">
+                            <input type="file" name="image" class="form-control image-form">
                             {% if form.image.errors %}
                             <div class="alert alert-danger" role="alert">
                                 {{ form.image.errors }}
                             </div>
                             {% endif %}
                         </div>
-                        <button type="submit" class="btn btn-primary" style="margin: 0 0 10px 10px;">Post</button>
+                        <button type="submit" class="btn btn-primary" style="margin: 0 0 10px 10px; position: absolute; bottom: 5px;right: 10px;">Post</button>
                     </form>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                         <button type="button" class="btn btn-default btn-xs">
                             <i class="fa fa-thumbs-o-up"></i>
                             {% if user in post.likes.all %}
-                            Unlike
+                            Dislike
                             {% else %}
                             Like
                             {% endif %}
@@ -108,7 +108,7 @@
                 </div>
                 {% endif %}
                 <div class="box-footer">
-                    <form action="{% url 'add_comment' post.id %}" method="post">
+                    <form action="{% url 'add_comment' post.id %}?next={{ request.path }}" method="post">
                         <img class="img-responsive img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Alt Text">
                         <div class="img-push">
                             {% csrf_token %}
@@ -126,7 +126,7 @@
                             <h5 class="modal-title" id="editPostModalLabel{{ post.id }}">Edit Post</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="{% url 'edit_post' post.id %}" method="post">
+                        <form action="{% url 'edit_post' post.id %}?next={{ request.path }}" method="post">
                             {% csrf_token %}
                             <div class="modal-body">
                                 <div class="form-group">
@@ -154,7 +154,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">Delete</a>
+                            <a href="{% url 'delete_post' post.id %}?next={{ request.path }}" class="btn btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>
@@ -200,7 +200,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <a href="{% url 'delete_comment' comment.id %}" class="btn btn-danger">Delete</a>
+                                <a href="{% url 'delete_comment' comment.id %}?next={{ request.path }}" class="btn btn-danger">Delete</a>
                             </div>
                         </div>
                     </div>
