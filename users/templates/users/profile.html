@@ -18,11 +18,17 @@
                             {% if user == profile.user %}
                             <a href="#" class="btn btn-xs btn-success">Edit Profile</a>
                             {% else %}
-                            <a href="#" class="btn btn-xs btn-success">Follow</a>
+                            {% if user.profile in profile.followers.all %}
+                                <a href="{% url 'follow' profile.user.username %}?next={{ request.path }}" class="btn btn-xs btn-danger">Unfollow</a>
+                                {% else %}
+                                <a href="{% url 'follow' profile.user.username %}?next={{ request.path }}" class="btn btn-xs btn-success">Follow</a>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>
                     <ul class="profile-header-tab nav nav-tabs">
+                        <li>{{ profile.followers.count }} Followers</li>
+                        <li style="margin-left: 15px;">{{ profile.following.count }} Following</li>
                     </ul>
                 </div>
             </div>
