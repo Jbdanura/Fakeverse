@@ -47,14 +47,19 @@
                           <img src="{{ post.image.url }}" alt="Post Image" style="max-width:400px;max-height: 400px;padding-bottom: 20px">
                         {% endif %}
                     </div>
-                    <a href="{% url 'like_post' post.id %}?next={{ request.path }}"><button type="button" class="btn btn-default btn-xs">
-                        <i class="fa fa-thumbs-o-up"></i>
+                    {% if user.is_authenticated %}
                         {% if user in post.likes.all %}
-                        Dislike
+                        <a href="{% url 'like_post' post.id %}?next={{ request.path }}"><button type="button" class="btn btn-default btn-xs">
+                        <i class="fa fa-thumbs-o-up" style="color:red"></i> Dislike</button></a>
                         {% else %}
-                        Like
+                        <a href="{% url 'like_post' post.id %}?next={{ request.path }}"><button type="button" class="btn btn-default btn-xs">
+                        <i class="fa fa-thumbs-o-up"></i> Like</button></a>
                         {% endif %}
-                    </button></a>
+                    {% else %}
+                    <a href="{% url 'like_post' post.id %}?next={{ request.path }}"><button type="button" class="btn btn-default btn-xs">
+                        <i class="fa fa-thumbs-o-up"></i> Like</button></a>
+                    {% endif %}
+
                     <span class="pull-right text-muted" style="margin-left: 3px;">- {{post.comments.count}} comment{{post.comments.count|pluralize}}</span>
                     <a class="pull-right text-muted" style="font-weight:400;" data-bs-toggle="modal" data-bs-target="#likesModal{{ post.id }}" href="#"> {{post.likes.count}} like{{post.likes.count|pluralize}} </a>
                 </div>

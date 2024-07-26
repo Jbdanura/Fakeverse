@@ -42,7 +42,10 @@ def create_post(request):
         else:
             messages.error(request,"Invalid post")
             next_url = request.GET.get('next')
-            return redirect(next_url)
+            if next_url:
+                return redirect(next_url)
+            else:
+                return redirect('home')
     return redirect('home')
 
 @login_required

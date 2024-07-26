@@ -27,8 +27,8 @@
                         </div>
                     </div>
                     <ul class="profile-header-tab nav nav-tabs">
-                        <li>{{ profile.followers.count }} Followers</li>
-                        <li style="margin-left: 15px;">{{ profile.following.count }} Following</li>
+                        <button class="btn btn-sm " data-bs-toggle="modal" data-bs-target="#followers-modal">{{ profile.followers.count }} Followers</button>
+                        <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#following-modal" style="margin-left: 15px;">{{ profile.following.count }} Following</button>
                     </ul>
                 </div>
             </div>
@@ -217,6 +217,52 @@
             <p style="font-weight: bold; font-size: 25px; color: grey; margin-left: 25px">User has no posts</p>
             {% endif %}
 
+        </div>
+    </div>
+    <div class="modal fade" id="followers-modal" tabindex="-1" aria-labelledby="followers-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Followers</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        {% for follower in profile.followers.all %}
+                        <a href="{% url 'view_profile' follower.user.username %}">
+                            <li class="list-group-item"><img class="img-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User Image" style="width:30px;">
+                                <span>{{ follower.user.username }}</span></li>
+                        </a>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="modal fade" id="following-modal" tabindex="-1" aria-labelledby="following-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Following</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        {% for following in profile.following.all %}
+                        <a href="{% url 'view_profile' following.user.username %}">
+                            <li class="list-group-item"><img class="img-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User Image" style="width:30px;">
+                                <span>{{ following.user.username }}</span></li>
+                        </a>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
