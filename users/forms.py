@@ -10,10 +10,19 @@ class CustomSignupForm(SignupForm):
         self.fields['password2'].help_text = ''  # Remove help text
 
 
-class ProfileForm(forms.ModelForm):
+
+class BioEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['avatar', 'bio']
+        fields = ['bio']
         widgets = {
-            'bio': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Tell us about yourself...'}),
+            'bio': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+        }
+
+class AvatarEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar']
+        widgets = {
+            'avatar': forms.FileInput(attrs={'class': 'form-control'}),
         }

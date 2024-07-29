@@ -6,6 +6,7 @@ from django.contrib import messages
 from posts.forms import PostForm, CommentForm
 from posts.models import Post, Comment
 from django.db.models import Count
+
 import random
 
 def home_view(request):
@@ -14,8 +15,6 @@ def home_view(request):
     comment_form = CommentForm()
     new_users = User.objects.order_by('-date_joined')[:5]
     top_liked_posts = Post.objects.annotate(num_likes=Count('likes')).order_by('-num_likes')[:5]
-
-
 
     return render(request, 'posts/home.html',
                   {'posts': posts,
@@ -125,3 +124,5 @@ def delete_comment(request, comment_id):
         return redirect(next_url)
     else:
         return redirect('home')
+
+

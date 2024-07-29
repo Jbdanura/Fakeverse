@@ -3,10 +3,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Profile
-from .forms import ProfileForm
+from .forms import BioEditForm, AvatarEditForm
 from posts.models import Post
 from django.contrib import messages
 from django.db import transaction
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.utils.safestring import mark_safe
 
 def allusers_view(request):
     users = User.objects.all()
@@ -20,17 +23,6 @@ def view_profile(request, username):
     profile = user.profile
     posts = Post.objects.filter(author=user).order_by('-created_at')
     return render(request, 'users/profile.html', {'profile': profile, 'posts': posts})
-
-@login_required
-def edit_profile(request):
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return redirect('view_profile', username=request.user.username)
-    else:
-        form = ProfileForm(instance=request.user.profile)
-    return render(request, 'users/edit_profile.html', {'form': form})
 
 
 def search_user(request):
@@ -63,3 +55,45 @@ def follow_unfollow(request, username):
 
     next_url = request.GET.get('next')
     return redirect(next_url or 'view_profile', username=username)
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        if 'update_profile' in request.POST:
+            form = BioEditForm(request.POST, instance=request.user.profile)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Your profile has been updated!')
+            else:
+                error_messages = []
+                for field, errors in form.errors.items():
+                    error_messages.append(f"{field.capitalize()}: {', '.join(errors)}")
+                messages.error(request, f"Error updating profile: {'; '.join(error_messages)}")
+        elif 'change_password' in request.POST:
+            password_form = PasswordChangeForm(request.user, request.POST)
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Your password was successfully updated!')
+            else:
+                messages.error(request, "Error changing password")
+        return redirect('edit_profile')
+    else:
+        form = BioEditForm(instance=request.user.profile)
+        password_form = PasswordChangeForm(request.user)
+
+    return render(request, 'users/edit_profile.html', {
+        'form': form,
+        'password_form': password_form
+    })
+
+@login_required
+def edit_avatar(request):
+    if request.method == "POST":
+        form = AvatarEditForm(request.POST,request.FILES,instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Your avatar was successfully updated!")
+        else:
+            messages.error(request,"Error changing avatar")
+    return redirect('edit_profile')

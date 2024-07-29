@@ -16,7 +16,7 @@
                             <h4 class="m-t-10 m-b-5">{{profile.user.username}}</h4>
                             <p class="m-b-10">{{ profile.bio|default:"Hello world!" }}</p>
                             {% if user == profile.user %}
-                            <a href="#" class="btn btn-xs btn-success">Edit Profile</a>
+                            <a href="{% url 'edit_profile' %}" class="btn btn-xs btn-success">Edit Account</a>
                             {% else %}
                             {% if user.profile in profile.followers.all %}
                                 <a href="{% url 'follow' profile.user.username %}?next={{ request.path }}" class="btn btn-xs btn-danger">Unfollow</a>
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <ul class="profile-header-tab nav nav-tabs">
-                        <button class="btn btn-sm " data-bs-toggle="modal" data-bs-target="#followers-modal">{{ profile.followers.count }} Followers</button>
+                        <button class="btn btn-sm " data-bs-toggle="modal" data-bs-target="#followers-modal">{{ profile.followers.count }} Follower{{profile.followers.count|pluralize}}</button>
                         <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#following-modal" style="margin-left: 15px;">{{ profile.following.count }} Following</button>
                     </ul>
                 </div>
