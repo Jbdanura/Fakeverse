@@ -90,6 +90,9 @@ def edit_profile(request):
 @login_required
 def edit_avatar(request):
     if request.method == "POST":
+        if not request.FILES:
+            messages.error(request,"No image submitted")
+            return redirect('edit_profile')
         form = AvatarEditForm(request.POST,request.FILES,instance=request.user.profile)
         if form.is_valid():
             form.save()

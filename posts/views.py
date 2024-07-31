@@ -6,7 +6,7 @@ from django.contrib import messages
 from posts.forms import PostForm, CommentForm
 from posts.models import Post, Comment
 from django.db.models import Count
-
+from users.models import Profile
 import random
 
 def home_view(request):
@@ -14,14 +14,13 @@ def home_view(request):
     posts = Post.objects.all().order_by('-created_at')
     comment_form = CommentForm()
     new_users = User.objects.order_by('-date_joined')[:5]
-    top_liked_posts = Post.objects.annotate(num_likes=Count('likes')).order_by('-num_likes')[:5]
-
+    top_users = Profile.objects.annotate(num_followers=Count('followers')).order_by('-num_followers')[:5]
     return render(request, 'posts/home.html',
                   {'posts': posts,
                    'users': users,
                    'comment_form':comment_form,
                    'new_users':new_users,
-                   'top_liked_posts':top_liked_posts
+                   'top_users':top_users
                    })
 
 @login_required

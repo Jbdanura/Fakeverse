@@ -29,7 +29,7 @@
             <div class="box box-widget">
                 <div class="box-header with-border">
                     <div class="user-block">
-                        <img class="img-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User Image">
+                        <img class="img-circle" src="{{ user.profile.avatar.url }}" alt="User Image">
                         <span class="username"><a href="{% url 'view_profile' post.author.username %}">{{post.author.username}}</a></span>
                         <span class="description">{{post.updated_at}}</span>
                     </div>
@@ -66,7 +66,7 @@
                 <div class="box-footer box-comments" id="comments-container-{{post.id}}">
                     {% for comment in post.comments.all|slice:":2" %}
                     <div class="box-comment">
-                        <img class="img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="User Image">
+                        <img class="img-circle img-sm" src="{{ user.profile.avatar.url }}" alt="User Image">
                         <div class="comment-text">
                             <span class="username">
                             {{comment.author.username}}
@@ -165,7 +165,7 @@
                         <ul class="list-group">
                             {% for user in post.likes.all %}
                             <a href="{% url 'view_profile' user.username %}">
-                                <li class="list-group-item"><img class="img-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User Image" style="width:30px;">
+                                <li class="list-group-item"><img class="img-circle" src="{{ user.profile.avatar.url }}" alt="User Image" style="width:30px;">
                                     <span>{{ user.username }}</span></li>
                             </a>
                             {% endfor %}
@@ -186,7 +186,7 @@
             <ul class="list-unstyled" style="margin-top: 30px;">
                 {% for user in new_users %}
                 <a class="media mb-3" href="{% url 'view_profile' user.username %}">
-                    <img class="mr-3 rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar{{ forloop.counter }}.png" alt="User Image" width="50">
+                    <img class="mr-3" src="{{ user.profile.avatar.url }}" alt="User Image" width=45">
                     <div class="media-body">
                         <h5 class="mt-0">{{ user.username }}</h5>
                     </div>
@@ -195,19 +195,17 @@
             </ul>
         </div>
         <div class="p-3 bg-light rounded" style="margin-top: 30px;box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;border-radius:5px">
-            <h5><img src="/static/images/thumbs.png" style="width: 40px; margin-right: 5px">Top Posts</h5>
+            <h5><img src="/static/images/thumbs.png" style="width: 40px; margin-right: 5px">Top Users</h5>
             <ul class="list-unstyled" style="margin-top: 30px">
-                {% for post in top_liked_posts %}
+                {% for profile in top_users %}
                 <div class="top-posts-container" style="margin-top: 20px">
-                    <a href="{% url 'view_profile' post.author.username %}">
-                        <img class="mr-3 rounded-circle"
-                         src="https://bootdey.com/img/Content/avatar/avatar{{ forloop.counter }}.png"
-                         alt="User Image" width="50">
-                    {{post.author.username}}
+                    <a href="{% url 'view_profile' profile.user.username %}">
+                        <img class="mr-3"
+                         src="{{ profile.avatar.url }}"
+                         alt="User Image" width="45">
+                    {{profile.user.username}}
                     </a>
-                    <p style="margin-top: 10px; color: grey;">{{post.likes.count}} like{{post.likes.count|pluralize}} </p>
-                    <a href="{% url 'view_profile' post.author.username %}" style="padding-bottom: 10px">{{ post.content|slice:":40" }}</a>
-                    <hr>
+                    <p style="margin-top: 10px; color: grey;">{{profile.followers.count}} follower{{profile.followers.count|pluralize}} </p>
                 </div>
                 {% endfor %}
             </ul>
