@@ -29,7 +29,7 @@
             <div class="box box-widget">
                 <div class="box-header with-border">
                     <div class="user-block">
-                        <img class="img-circle" src="{{ user.profile.avatar.url }}" alt="User Image">
+                        <img class="img-circle" src="{{ post.author.profile.avatar.url }}" alt="User Image">
                         <span class="username"><a href="{% url 'view_profile' post.author.username %}">{{post.author.username}}</a></span>
                         <span class="description">{{post.updated_at}}</span>
                     </div>
@@ -66,7 +66,7 @@
                 <div class="box-footer box-comments" id="comments-container-{{post.id}}">
                     {% for comment in post.comments.all|slice:":2" %}
                     <div class="box-comment">
-                        <img class="img-circle img-sm" src="{{ user.profile.avatar.url }}" alt="User Image">
+                        <img class="img-circle img-sm" src="{{ comment.author.profile.avatar.url }}" alt="User Image">
                         <div class="comment-text">
                             <span class="username">
                             {{comment.author.username}}
@@ -106,7 +106,7 @@
                 {% endif %}
                 <div class="box-footer">
                     <form action="{% url 'add_comment' post.id %}" method="post">
-                        <img class="img-responsive img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Alt Text">
+                        <img class="img-responsive img-circle img-sm" src="{{user.profile.avatar.url}}" alt="Alt Text">
                         <div class="img-push">
                             {% csrf_token %}
                             <input type="text" name="content" class="form-control input-sm" placeholder="Press enter to post comment">
@@ -186,7 +186,7 @@
             <ul class="list-unstyled" style="margin-top: 30px;">
                 {% for user in new_users %}
                 <a class="media mb-3" href="{% url 'view_profile' user.username %}">
-                    <img class="mr-3" src="{{ user.profile.avatar.url }}" alt="User Image" width=45">
+                    <img class="mr-3" src="{{ user.profile.avatar.url }}" alt="User Image" width=45" height="45">
                     <div class="media-body">
                         <h5 class="mt-0">{{ user.username }}</h5>
                     </div>
@@ -202,7 +202,7 @@
                     <a href="{% url 'view_profile' profile.user.username %}">
                         <img class="mr-3"
                          src="{{ profile.avatar.url }}"
-                         alt="User Image" width="45">
+                         alt="User Image" width="45" height="45">
                     {{profile.user.username}}
                     </a>
                     <p style="margin-top: 10px; color: grey;">{{profile.followers.count}} follower{{profile.followers.count|pluralize}} </p>

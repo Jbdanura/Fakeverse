@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10 mx-auto">
-            <!-- Profile section -->
+
             <div class="profile mb-4">
                 <div class="profile-header">
                     <div class="profile-header-cover"></div>
@@ -53,7 +53,7 @@
                 </div>
             </div>
             {% endif %}
-            <!-- Posts section -->
+
             {% for post in posts %}
             <div class="box box-widget mb-4">
                 <div class="box-header with-border">
@@ -77,12 +77,12 @@
                         {% endif %}
                     </div>
                     <a href="{% url 'like_post' post.id %}?next={{ request.path }}">
-                        <button type="button" class="btn btn-default btn-xs">
-                            <i class="fa fa-thumbs-o-up"></i>
                             {% if user in post.likes.all %}
-                            Dislike
+                            <a href="{% url 'like_post' post.id %}?next={{ request.path }}"><button type="button" class="btn btn-default btn-xs">
+                            <i class="fa fa-thumbs-o-up" style="color:red"></i> Dislike</button></a>
                             {% else %}
-                            Like
+                            <a href="{% url 'like_post' post.id %}?next={{ request.path }}"><button type="button" class="btn btn-default btn-xs">
+                            <i class="fa fa-thumbs-o-up"></i> Like</button></a>
                             {% endif %}
                         </button>
                     </a>
@@ -124,7 +124,7 @@
                 </div>
             </div>
 
-            <!-- Modals for each post -->
+
             <div class="modal fade" id="editPostModal{{ post.id }}" tabindex="-1" aria-labelledby="editPostModalLabel{{ post.id }}" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
