@@ -11,7 +11,11 @@ import random
 
 def home_view(request):
     users = User.objects.all()
-    posts = Post.objects.all().order_by('-created_at')
+    if request.GET.get('view') == 'following':
+        following_users = request.user.profile.following.all()
+        posts = Post.objects.filter(author__profile__in=following_users)
+    else:
+        posts = Post.objects.all()
     comment_form = CommentForm()
     new_users = User.objects.order_by('-date_joined')[:5]
     top_users = Profile.objects.annotate(num_followers=Count('followers')).order_by('-num_followers')[:5]
