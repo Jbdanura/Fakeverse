@@ -181,3 +181,5 @@ MAX_UPLOAD_SIZE = 2 * 1024 * 1024
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CSRF_TRUSTED_ORIGINS = ['https://render.com','https://fakeverse.onrender.com']
