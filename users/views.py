@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
@@ -21,7 +22,10 @@ def allusers_view(request):
 def view_profile(request, username):
     user = get_object_or_404(User, username=username)
     profile = user.profile
-    posts = Post.objects.filter(author=user).order_by('-created_at')
+    posts_list = Post.objects.filter(author=user).order_by('-created_at')
+    paginator = Paginator(posts_list, 10)  # Show 10 posts per page
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
     return render(request, 'users/profile.html', {'profile': profile, 'posts': posts})
 
 

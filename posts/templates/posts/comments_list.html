@@ -1,0 +1,19 @@
+{% for comment in comments %}
+    <div class="box-comment" id="comment-{{ comment.id }}">
+        <img class="img-circle img-sm" src="{{ comment.author.profile.avatar.url }}" alt="User Image">
+        <div class="comment-text">
+            <span class="username">
+                {{comment.author.username}}
+                <span class="text-muted pull-right">{{comment.updated_at}}</span>
+            </span>
+            {{comment.content}}
+            {% if comment.author == user %}
+            <span class="text-muted pull-right">
+                <button type="button" class="btn btn-danger btn-sm delete-comment" data-comment-id="{{ comment.id }}">
+                    Delete
+                </button>
+            </span>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
