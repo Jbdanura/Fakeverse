@@ -190,7 +190,23 @@
                 </div>
             </div>
             {% endfor %}
+        <div class="pagination" style="margin-left: 30px; padding-bottom: 20px;">
+            <span class="step-links">
+                {% if posts.has_previous %}
+                    <a href="?page=1" style="margin-right: 5px;">&laquo; First</a>
+                    <a href="?page={{ posts.previous_page_number }}" style="margin-right: 5px;">Previous</a>
+                {% endif %}
 
+                <span class="current">
+                    Page {{ posts.number }} of {{ posts.paginator.num_pages }}
+                </span>
+
+                {% if posts.has_next %}
+                    <a href="?page={{ posts.next_page_number }}" style="margin-left: 5px;">Next</a>
+                    <a href="?page={{ posts.paginator.num_pages }}" style="margin-left: 5px;">Last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
 
             {% for post in posts %}
                 {% for comment in post.comments.all %}
@@ -266,4 +282,67 @@
         </div>
     </div>
 </div>
+<script>
+$(document).ready(function() {
+    // Show more comments functionality
+    $(document).on('click', '.show-more-comments', function() {
+        var postId = $(this).data('post-id');
+        var commentsContainer = $('#comments-container-' + postId);
+        var button = $(this);
+
+        $.ajax({
+            url: '/load_more_comments/' + postId + '/',
+            type: 'GET',
+            success: function(data) {
+                commentsContainer.html(data.comments_html);
+                button.parent().remove();  // Remove the "Show more comments" button
+            },
+            error: function(xhr, status, error) {
+                console.error("Error loading comments:", error);
+            }
+        });
+    });
+
+    // Delete comment functionality using event delegation
+    $(document).on('click', '.delete-comment', function() {
+        var commentId = $(this).data('comment-id');
+        if (confirm('Are you sure you want to delete this comment?')) {
+            $.ajax({
+                url: '/delete_comment/' + commentId + '/',
+                type: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                success: function(data) {
+                    if (data.status === 'success') {
+                        $('#comment-' + commentId).remove();
+                    } else {
+                        location.reload()
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error deleting comment:", error);
+                    alert("An error occurred while deleting the comment.");
+                }
+            });
+        }
+    });
+
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
 {% endblock %}

@@ -3,19 +3,26 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.template.loader import render_to_string
+
 from posts.forms import PostForm, CommentForm
 from posts.models import Post, Comment
 from django.db.models import Count
 from users.models import Profile
 import random
+from django.core.paginator import Paginator
+
 
 def home_view(request):
     users = User.objects.all()
     if request.GET.get('view') == 'following':
         following_users = request.user.profile.following.all()
-        posts = Post.objects.filter(author__profile__in=following_users)
+        posts_list = Post.objects.filter(author__profile__in=following_users).order_by('-created_at')
     else:
-        posts = Post.objects.all()
+        posts_list = Post.objects.all().order_by('-created_at')
+    paginator = Paginator(posts_list, 10)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
     comment_form = CommentForm()
     new_users = User.objects.order_by('-date_joined')[:5]
     top_users = Profile.objects.annotate(num_followers=Count('followers')).order_by('-num_followers')[:5]
@@ -96,6 +103,7 @@ def edit_post(request, post_id):
                 return redirect(next_url)
     else:
         return redirect("home")
+    return redirect("home")
 
 @login_required
 def delete_post(request, post_id):
@@ -128,4 +136,9 @@ def delete_comment(request, comment_id):
     else:
         return redirect('home')
 
-
+def load_more_comments(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    comments = post.comments.all()
+    context = {'comments': comments, 'user': request.user}
+    comments_html = render_to_string('posts/comments_list.html', context)
+    return JsonResponse({'comments_html': comments_html})

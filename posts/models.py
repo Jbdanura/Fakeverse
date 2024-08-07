@@ -16,6 +16,15 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.author.username}: {self.content[:50]}...'
 
+    def initial_comments(self):
+        return self.comments.all().order_by('-created_at')[:3]
+
+    def has_more_comments(self):
+        return self.comments.count() > 3
+
+    def comments_count(self):
+        return self.comments.count()
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
