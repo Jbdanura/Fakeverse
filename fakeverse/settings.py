@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://render.com','https://fakeverse.onrender.com','localhost','127.0.0.1','0.0.0.0']
+ALLOWED_HOSTS = ['https://render.com','https://fakeverse.onrender.com','localhost','127.0.0.1','0.0.0.0','fakeverse.onrender.com']
 
 
 # Application definition
