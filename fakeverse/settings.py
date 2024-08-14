@@ -14,6 +14,15 @@ import sys
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+  	cloud_name = os.getenv('CLOUD_NAME'),
+  	api_key = os.getenv('CLOUD_KEY'),
+  	api_secret = os.getenv('CLOUD_SECRET')
+)
 
 load_dotenv()
 

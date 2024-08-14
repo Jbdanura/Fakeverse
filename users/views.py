@@ -11,6 +11,7 @@ from django.db import transaction
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.utils.safestring import mark_safe
+import cloudinary.uploader
 
 def allusers_view(request):
     users = User.objects.all()
@@ -99,8 +100,14 @@ def edit_avatar(request):
             return redirect('edit_profile')
         form = AvatarEditForm(request.POST,request.FILES,instance=request.user.profile)
         if form.is_valid():
-            form.save()
-            messages.success(request,"Your avatar was successfully updated!")
+            file = request.FILES['avatar']
+            upload_result = cloudinary.uploader.upload(file, folder='fakeverse',
+                                                       public_id=f'{request.user.username}_avatar')
+            # Save the Cloudinary URL to the profile
+            request.user.profile.avatar = upload_result['url']
+            request.user.profile.save()
+
+            messages.success(request, "Your avatar was successfully updated!")
         else:
             messages.error(request,"Error changing avatar")
     return redirect('edit_profile')

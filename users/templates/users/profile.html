@@ -10,7 +10,7 @@
                     <div class="profile-header-cover"></div>
                     <div class="profile-header-content">
                         <div class="profile-header-img" style="background:none;">
-                            <img src="{{ profile.avatar.url }}" alt="">
+                            <img src="{{ profile.avatar }}" alt="">
                         </div>
                         <div class="profile-header-info">
                             <h4 class="m-t-10 m-b-5">{{profile.user.username}}</h4>
@@ -58,7 +58,7 @@
             <div class="box box-widget mb-4">
                 <div class="box-header with-border">
                     <div class="user-block">
-                        <img class="img-circle" src="{{ user.profile.avatar.url }}" alt="User Image">
+                        <img class="img-circle" src="{{ user.profile.avatar }}" alt="User Image">
                         <span class="username"><a href="#">{{post.author.username}}</a></span>
                         <span class="description">{{post.updated_at}}</span>
                     </div>
@@ -73,7 +73,7 @@
                     <div>
                         <p>{{post.content}}</p>
                         {% if post.image %}
-                          <img src="{{ post.image.url }}" alt="Post Image" style="max-width:400px;max-height: 400px;padding-bottom: 20px">
+                          <img src="{{ post.image }}" alt="Post Image" style="max-width:400px;max-height: 400px;padding-bottom: 20px">
                         {% endif %}
                     </div>
                     <a href="{% url 'like_post' post.id %}?next={{ request.path }}">
@@ -92,7 +92,7 @@
                 <div class="box-footer box-comments" id="comments-container-{{post.id}}">
                     {% for comment in post.comments.all|slice:":2" %}
                     <div class="box-comment">
-                        <img class="img-circle img-sm" src="{{ user.profile.avatar.url }}" alt="User Image">
+                        <img class="img-circle img-sm" src="{{ user.profile.avatar }}" alt="User Image">
                         <div class="comment-text">
                             <span class="username">
                                 {{comment.author.username}}
@@ -115,7 +115,7 @@
                 {% endif %}
                 <div class="box-footer">
                     <form action="{% url 'add_comment' post.id %}?next={{ request.path }}" method="post">
-                        <img class="img-responsive img-circle img-sm" src="{{ user.profile.avatar.url }}" alt="Alt Text">
+                        <img class="img-responsive img-circle img-sm" src="{{ user.profile.avatar }}" alt="Alt Text">
                         <div class="img-push">
                             {% csrf_token %}
                             <input type="text" name="content" class="form-control input-sm" placeholder="Press enter to post comment">
@@ -177,7 +177,7 @@
                             <ul class="list-group">
                                 {% for user in post.likes.all %}
                                 <a href="{% url 'view_profile' user.username %}">
-                                    <li class="list-group-item"><img class="img-circle" src="{{ user.profile.avatar.url }}" alt="User Image" style="width:30px;">
+                                    <li class="list-group-item"><img class="img-circle" src="{{ user.profile.avatar }}" alt="User Image" style="width:30px;">
                                         <span>{{ user.username }}</span></li>
                                 </a>
                                 {% endfor %}
@@ -246,7 +246,7 @@
                     <ul class="list-group">
                         {% for follower in profile.followers.all %}
                         <a href="{% url 'view_profile' follower.user.username %}">
-                            <li class="list-group-item"><img class="img-circle" src="{{ user.profile.avatar.url }}" alt="User Image" style="width:30px;">
+                            <li class="list-group-item"><img class="img-circle" src="{{ user.profile.avatar }}" alt="User Image" style="width:30px;">
                                 <span>{{ follower.user.username }}</span></li>
                         </a>
                         {% endfor %}
@@ -269,7 +269,7 @@
                     <ul class="list-group">
                         {% for following in profile.following.all %}
                         <a href="{% url 'view_profile' following.user.username %}">
-                            <li class="list-group-item"><img class="img-circle" src="{{ user.profile.avatar.url }}" alt="User Image" style="width:30px;">
+                            <li class="list-group-item"><img class="img-circle" src="{{ user.profile.avatar }}" alt="User Image" style="width:30px;">
                                 <span>{{ following.user.username }}</span></li>
                         </a>
                         {% endfor %}

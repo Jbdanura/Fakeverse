@@ -15,7 +15,7 @@ def user_avatar_path(instance, filename):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to=user_avatar_path, default='avatars/default.jpg')
+    avatar = models.CharField(max_length=255, null=True, blank=True, default="https://res.cloudinary.com/dchytnqhl/image/upload/v1723662781/fakeverse/default.png")
     bio = models.TextField(blank=True,max_length=100)
     following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
 

@@ -4,13 +4,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.template.loader import render_to_string
-
 from posts.forms import PostForm, CommentForm
 from posts.models import Post, Comment
 from django.db.models import Count
 from users.models import Profile
 import random
 from django.core.paginator import Paginator
+import cloudinary.uploader
 
 
 def home_view(request):
@@ -41,10 +41,16 @@ def create_post(request):
         print(request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
-            if request.FILES.get('image'):
-                post.image = request.FILES['image']
             post.author = request.user
             post.save()
+
+            if request.FILES.get('image'):
+                file = request.FILES['image']
+                upload_result = cloudinary.uploader.upload(file, public_id=f'post_{post.id}',folder='fakeverse')
+                print(upload_result)
+                post.image = upload_result['url']
+                post.save(update_fields=['image'])
+
             next_url = request.GET.get('next')
             if next_url:
                 return redirect(next_url)
