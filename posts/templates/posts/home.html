@@ -112,15 +112,22 @@
                     <button class="btn btn-link show-more-comments" data-post-id="{{ post.id }}" data-offset="2">Show more comments</button>
                 </div>
                 {% endif %}
+
                 <div class="box-footer">
                     <form action="{% url 'add_comment' post.id %}" method="post">
+                        {% if user.is_authenticated %}
                         <img class="img-responsive img-circle img-sm" src="{{user.profile.avatar}}" alt="Alt Text">
                         <div class="img-push">
                             {% csrf_token %}
                             <input type="text" name="content" class="form-control input-sm" placeholder="Press enter to post comment">
                         </div>
+                        {% else %}
+                            {% csrf_token %}
+                            <input type="text" name="content" class="form-control input-sm" placeholder="Log in to comment">
+                        {% endif %}
                     </form>
                 </div>
+
             </div>
         </div>
         <div class="modal fade" id="editPostModal{{ post.id }}" tabindex="-1" aria-labelledby="editPostModalLabel{{ post.id }}" aria-hidden="true">
