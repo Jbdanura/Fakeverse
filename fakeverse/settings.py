@@ -40,7 +40,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://render.com','https://fakeverse.onrender.com','fakeverse.onrender.com']
+ALLOWED_HOSTS = ['https://render.com','https://fakeverse.onrender.com','fakeverse.onrender.com','127.0.0.1']
 
 
 # Application definition
@@ -209,17 +209,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CSRF_TRUSTED_ORIGINS = ['https://render.com','https://fakeverse.onrender.com']
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'stream': sys.stdout,
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'ERROR',
-    },
-}
