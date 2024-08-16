@@ -32,6 +32,11 @@
             </div>
             {% endif %}
         </div>
+        <div class="d-md-none mb-3">
+            <button type="button" class="btn btn-primary w-50 ml-3" data-bs-toggle="modal" data-bs-target="#recommendedUsersModal">
+              Show recommended users
+            </button>
+        </div>
         {% for post in posts %}
         <div class="container" style="margin-top: 20px;">
             <div class="box box-widget">
@@ -243,7 +248,44 @@
             </ul>
         </div>
     </aside>
-
+<div class="modal fade" id="recommendedUsersModal" tabindex="-1" aria-labelledby="recommendedUsersModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="recommendedUsersModalLabel">Recommended Users</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <h6>Newest Users</h6>
+          <ul class="list-unstyled">
+            {% for user in new_users %}
+              <li class="mb-2">
+                <img src="{{ user.profile.avatar }}" alt="{{ user.username }}'s avatar" class="rounded-circle" style="width: 30px; height: 30px;">
+                <a href="{% url 'view_profile' user.username %}" class="ml-2">{{ user.username }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div>
+          <h6>Top Users</h6>
+          <ul class="list-unstyled">
+            {% for profile in top_users %}
+              <li class="mb-2">
+                <img src="{{ profile.avatar }}" alt="{{ profile.user.username }}'s avatar" class="rounded-circle" style="width: 30px; height: 30px;">
+                <a href="{% url 'view_profile' profile.user.username %}" class="ml-2">{{ profile.user.username }}</a>
+                <span class="badge bg-primary float-end">{{profile.followers.count}} follower{{profile.followers.count|pluralize}}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 <script>
 $(document).ready(function() {
@@ -307,5 +349,11 @@ $(document).ready(function() {
         return cookieValue;
     }
 });
+    document.addEventListener('DOMContentLoaded', function() {
+    if (window.innerWidth < 800) {
+      var myModal = new bootstrap.Modal(document.getElementById('recommendedUsersModal'));
+      myModal.show();
+    }
+  });
 </script>
 {% endblock %}

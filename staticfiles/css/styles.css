@@ -1107,8 +1107,8 @@ body{
     position: relative;
 }
 .user-block img {
-    width: 40px;
-    height: 40px;
+    max-width: 40px;
+    height: auto;
     float: left;
 }
 .user-block .username {
@@ -1730,4 +1730,21 @@ select.form-control:not([size]):not([multiple]) {
 }
 .like-btn{
     background-color:grey;
+}
+.post-image{
+    max-width: 500px;
+    padding-bottom: 20px;
+}
+.mobile-aside{
+    display: none;
+}
+@media screen and (max-width: 1000px){
+    .post-image{
+        max-width: 350px;
+    }
+}
+@media screen and (max-width: 500px){
+    .post-image{
+        max-width: 250px;
+    }
 }
