@@ -27,8 +27,8 @@
                         </div>
                     </div>
                     <ul class="profile-header-tab nav nav-tabs">
-                        <button class="btn btn-sm " data-bs-toggle="modal" data-bs-target="#followers-modal">{{ profile.followers.count }} Follower{{profile.followers.count|pluralize}}</button>
-                        <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#following-modal" style="margin-left: 15px;">{{ profile.following.count }} Following</button>
+                        <button class="btn btn-sm profile-followers-btn" data-bs-toggle="modal" data-bs-target="#followers-modal">{{ profile.followers.count }} Follower{{profile.followers.count|pluralize}}</button>
+                        <button class="btn btn-sm profile-following-btn" data-bs-toggle="modal" data-bs-target="#following-modal" style="margin-left: 15px;">{{ profile.following.count }} Following</button>
                     </ul>
                 </div>
             </div>

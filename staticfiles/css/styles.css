@@ -1752,5 +1752,15 @@ select.form-control:not([size]):not([multiple]) {
     }
     .show-recommended{
         width: 80%;
+        margin-top: -30px;
+    }
+    .image-form{
+        font-size: 15px;
+    }
+    .profile-following-btn, .profile-followers-btn{
+        font-size: 12px;
+    }
+    .profile-followers-btn{
+        margin-left: -50px;
     }
 }
