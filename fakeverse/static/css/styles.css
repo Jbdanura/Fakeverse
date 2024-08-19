@@ -1738,6 +1738,9 @@ select.form-control:not([size]):not([multiple]) {
 .mobile-aside{
     display: none;
 }
+.show-recommended{
+    width: 50%;
+}
 @media screen and (max-width: 1000px){
     .post-image{
         max-width: 350px;
@@ -1746,5 +1749,8 @@ select.form-control:not([size]):not([multiple]) {
 @media screen and (max-width: 500px){
     .post-image{
         max-width: 250px;
+    }
+    .show-recommended{
+        width: 80%;
     }
 }

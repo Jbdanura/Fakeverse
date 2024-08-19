@@ -33,7 +33,7 @@
             {% endif %}
         </div>
         <div class="d-md-none mb-3">
-            <button type="button" class="btn btn-primary w-50 ml-3" data-bs-toggle="modal" data-bs-target="#recommendedUsersModal">
+            <button type="button" class="btn btn-primary ml-3 show-recommended" data-bs-toggle="modal" data-bs-target="#recommendedUsersModal">
               Show recommended users
             </button>
         </div>
@@ -349,11 +349,6 @@ $(document).ready(function() {
         return cookieValue;
     }
 });
-    document.addEventListener('DOMContentLoaded', function() {
-    if (window.innerWidth < 800) {
-      var myModal = new bootstrap.Modal(document.getElementById('recommendedUsersModal'));
-      myModal.show();
-    }
-  });
+
 </script>
 {% endblock %}
