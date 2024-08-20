@@ -16,11 +16,6 @@ import cloudinary.uploader
 
 
 def home_view(request):
-    generatedPost = generate()
-    if generatedPost:
-        AI_user = get_object_or_404(User,username="machinegod")
-        AI_post = Post(author=AI_user, content=generatedPost)
-        AI_post.save()
 
     if request.GET.get('view') == 'following':
         following_users = request.user.profile.following.all()
