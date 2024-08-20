@@ -12,12 +12,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.utils.safestring import mark_safe
 import cloudinary.uploader
-
-def allusers_view(request):
-    users = User.objects.all()
-    return render(request, "users/allusers.html",{"users":users})
-
-
+from generateAI import generate
 
 @login_required
 def view_profile(request, username):
@@ -27,6 +22,11 @@ def view_profile(request, username):
     paginator = Paginator(posts_list, 10)  # Show 10 posts per page
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
+    generatedPost = generate()
+    if generatedPost:
+        AI_user = get_object_or_404(User,username="machinegod")
+        AI_post = Post(author=AI_user, content=generatedPost)
+        AI_post.save()
     return render(request, 'users/profile.html', {'profile': profile, 'posts': posts})
 
 

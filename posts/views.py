@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.template.loader import render_to_string
+
+from generateAI import generate
 from posts.forms import PostForm, CommentForm
 from posts.models import Post, Comment
 from django.db.models import Count
@@ -14,7 +16,12 @@ import cloudinary.uploader
 
 
 def home_view(request):
-    users = User.objects.all()
+    generatedPost = generate()
+    if generatedPost:
+        AI_user = get_object_or_404(User,username="machinegod")
+        AI_post = Post(author=AI_user, content=generatedPost)
+        AI_post.save()
+
     if request.GET.get('view') == 'following':
         following_users = request.user.profile.following.all()
         posts_list = Post.objects.filter(author__profile__in=following_users).order_by('-created_at')
@@ -26,9 +33,9 @@ def home_view(request):
     comment_form = CommentForm()
     new_users = User.objects.order_by('-date_joined')[:5]
     top_users = Profile.objects.annotate(num_followers=Count('followers')).order_by('-num_followers')[:5]
+
     return render(request, 'posts/home.html',
                   {'posts': posts,
-                   'users': users,
                    'comment_form':comment_form,
                    'new_users':new_users,
                    'top_users':top_users
@@ -36,6 +43,11 @@ def home_view(request):
 
 @login_required
 def create_post(request):
+    generatedPost = generate()
+    if generatedPost:
+        AI_user = get_object_or_404(User,username="machinegod")
+        AI_post = Post(author=AI_user, content=generatedPost)
+        AI_post.save()
     if request.method == 'POST':
         form = PostForm(request.POST)
         print(request.FILES)
@@ -65,6 +77,11 @@ def create_post(request):
 
 @login_required
 def add_comment(request,post_id):
+    generatedPost = generate()
+    if generatedPost:
+        AI_user = get_object_or_404(User,username="machinegod")
+        AI_post = Post(author=AI_user, content=generatedPost)
+        AI_post.save()
     post = get_object_or_404(Post,id=post_id)
     print(request.POST)
     if request.method == "POST":
@@ -82,6 +99,11 @@ def add_comment(request,post_id):
 
 @login_required
 def like_post(request,post_id):
+    generatedPost = generate()
+    if generatedPost:
+        AI_user = get_object_or_404(User,username="machinegod")
+        AI_post = Post(author=AI_user, content=generatedPost)
+        AI_post.save()
     post = get_object_or_404(Post,id=post_id)
     if request.user in post.likes.all():
         post.likes.remove(request.user)
@@ -95,6 +117,11 @@ def like_post(request,post_id):
 
 @login_required
 def edit_post(request, post_id):
+    generatedPost = generate()
+    if generatedPost:
+        AI_user = get_object_or_404(User,username="machinegod")
+        AI_post = Post(author=AI_user, content=generatedPost)
+        AI_post.save()
     post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
         if post.author != request.user:
@@ -113,6 +140,11 @@ def edit_post(request, post_id):
 
 @login_required
 def delete_post(request, post_id):
+    generatedPost = generate()
+    if generatedPost:
+        AI_user = get_object_or_404(User,username="machinegod")
+        AI_post = Post(author=AI_user, content=generatedPost)
+        AI_post.save()
     post = get_object_or_404(Post, id=post_id)
     if post.author != request.user:
         messages.error(request, "You are not authorized to delete this post.")
@@ -130,6 +162,11 @@ def delete_post(request, post_id):
 
 @login_required
 def delete_comment(request, comment_id):
+    generatedPost = generate()
+    if generatedPost:
+        AI_user = get_object_or_404(User,username="machinegod")
+        AI_post = Post(author=AI_user, content=generatedPost)
+        AI_post.save()
     comment = get_object_or_404(Comment, id=comment_id)
     if comment.author != request.user:
         messages.error(request, "You are not authorized to delete this comment.")
