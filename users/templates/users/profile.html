@@ -58,7 +58,7 @@
             <div class="box box-widget mb-4">
                 <div class="box-header with-border">
                     <div class="user-block">
-                        <img class="img-circle" src="{{ user.profile.avatar }}" alt="User Image">
+                        <img class="img-circle" src="{{ post.author.profile.avatar }}" alt="User Image">
                         <span class="username"><a href="#">{{post.author.username}}</a></span>
                         <span class="description">{{post.updated_at}}</span>
                     </div>
@@ -92,7 +92,7 @@
                 <div class="box-footer box-comments" id="comments-container-{{post.id}}">
                     {% for comment in post.comments.all|slice:":2" %}
                     <div class="box-comment">
-                        <img class="img-circle img-sm" src="{{ user.profile.avatar }}" alt="User Image">
+                        <img class="img-circle img-sm" src="{{ comment.author.profile.avatar }}" alt="User Image">
                         <div class="comment-text">
                             <span class="username">
                                 {{comment.author.username}}
