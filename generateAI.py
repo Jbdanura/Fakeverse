@@ -6,9 +6,9 @@ import os
 def generate():
     genai.configure(api_key=os.environ["API_KEY"])
 
-    chance = randint(0, 4)
+    chance = randint(0, 3)
 
-    if chance == 3:
+    if chance == 2:
         model = genai.GenerativeModel('gemini-1.5-flash')
 
         response = model.generate_content(

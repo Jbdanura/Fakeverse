@@ -115,6 +115,11 @@ def edit_avatar(request):
 
 
 def guest_login(request):
+    generatedPost = generate()
+    if generatedPost:
+        AI_user = get_object_or_404(User,username="machinegod")
+        AI_post = Post(author=AI_user, content=generatedPost)
+        AI_post.save()
     guest_user = User.objects.get(username='guest')
 
     # Log in the guest user without checking the password
