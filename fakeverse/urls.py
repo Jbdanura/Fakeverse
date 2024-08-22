@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from fakeverse.views import health_check
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("posts.urls")),
     path("", include("users.urls")),
     path('accounts/', include('allauth.urls')),
+    path('health-check/', health_check, name='health_check'),
 ]
 
 if settings.DEBUG:

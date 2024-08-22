@@ -246,7 +246,7 @@
                     <ul class="list-group">
                         {% for follower in profile.followers.all %}
                         <a href="{% url 'view_profile' follower.user.username %}">
-                            <li class="list-group-item"><img class="img-circle" src="{{ user.profile.avatar }}" alt="User Image" style="width:30px;">
+                            <li class="list-group-item"><img class="img-circle" src="{{ follower.user.profile.avatar }}" alt="User Image" style="width:30px;">
                                 <span>{{ follower.user.username }}</span></li>
                         </a>
                         {% endfor %}
