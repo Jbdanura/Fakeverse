@@ -9,10 +9,11 @@ from posts.models import Post
 from django.contrib import messages
 from django.db import transaction
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, login
 from django.utils.safestring import mark_safe
 import cloudinary.uploader
 from generateAI import generate
+from django.contrib.auth.backends import ModelBackend  # Import the backend
 
 @login_required
 def view_profile(request, username):
@@ -111,3 +112,13 @@ def edit_avatar(request):
         else:
             messages.error(request,"Error changing avatar")
     return redirect('edit_profile')
+
+
+def guest_login(request):
+    guest_user = User.objects.get(username='guest')
+
+    # Log in the guest user without checking the password
+    login(request, guest_user,backend='django.contrib.auth.backends.ModelBackend')
+
+    # Redirect to a homepage or any other page
+    return redirect('home')
