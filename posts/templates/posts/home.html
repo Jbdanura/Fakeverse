@@ -42,7 +42,7 @@
             <div class="box box-widget">
                 <div class="box-header with-border">
                     <div class="user-block">
-                        <img class="img-circle" src="{{ post.author.profile.avatar }}" alt="User Image">
+                        <img class="img-circle" src="{{ post.author.profile.avatar }}" alt="User Image" height="35" width="30">
                         <span class="username"><a href="{% url 'view_profile' post.author.username %}">{{post.author.username}}</a></span>
                         <span class="description">{{post.updated_at}}</span>
                     </div>
@@ -79,7 +79,7 @@
                 <div class="box-footer box-comments" id="comments-container-{{post.id}}">
                     {% for comment in post.comments.all|slice:":2" %}
                     <div class="box-comment">
-                        <img class="img-circle img-sm" src="{{ comment.author.profile.avatar }}" alt="User Image">
+                        <img class="img-circle img-sm" src="{{ comment.author.profile.avatar }}" alt="User Image" height="35" width="30">
                         <div class="comment-text">
                             <span class="username">
                             {{comment.author.username}}
@@ -121,7 +121,7 @@
                 <div class="box-footer">
                     <form action="{% url 'add_comment' post.id %}" method="post">
                         {% if user.is_authenticated %}
-                        <img class="img-responsive img-circle img-sm" src="{{user.profile.avatar}}" alt="Alt Text">
+                        <img class="img-responsive img-circle img-sm" src="{{user.profile.avatar}}" alt="Alt Text" height="35" width="30">
                         <div class="img-push">
                             {% csrf_token %}
                             <input type="text" name="content" class="form-control input-sm" placeholder="Press enter to post comment">
@@ -185,7 +185,7 @@
                         <ul class="list-group">
                             {% for user in post.likes.all %}
                             <a href="{% url 'view_profile' user.username %}">
-                                <li class="list-group-item"><img class="img-circle" src="{{ user.profile.avatar }}" alt="User Image" style="width:30px;">
+                                <li class="list-group-item"><img class="img-circle" src="{{ user.profile.avatar }}" alt="User Image" style="width:30px; height: 30px">
                                     <span>{{ user.username }}</span></li>
                             </a>
                             {% endfor %}
@@ -223,7 +223,7 @@
             <ul class="list-unstyled" style="margin-top: 30px;">
                 {% for user in new_users %}
                 <a class="media mb-3" href="{% url 'view_profile' user.username %}">
-                    <img class="mr-3" src="{{ user.profile.avatar }}" alt="User Image" width=45">
+                    <img class="mr-3" src="{{ user.profile.avatar }}" alt="User Image" width=45" height="47">
                     <div class="media-body">
                         <h5 class="mt-0">{{ user.username }}</h5>
                     </div>
@@ -239,7 +239,7 @@
                     <a href="{% url 'view_profile' profile.user.username %}">
                         <img class="mr-3"
                          src="{{ profile.avatar }}"
-                         alt="User Image" width="45">
+                         alt="User Image" width="45" height="47">
                     {{profile.user.username}}
                     </a>
                     <p style="margin-top: 10px; color: grey;">{{profile.followers.count}} follower{{profile.followers.count|pluralize}} </p>
@@ -261,7 +261,7 @@
           <ul class="list-unstyled">
             {% for user in new_users %}
               <li class="mb-2">
-                <img src="{{ user.profile.avatar }}" alt="{{ user.username }}'s avatar" class="rounded-circle" style="width: 30px; height: 30px;">
+                <img src="{{ user.profile.avatar }}" alt="{{ user.username }}'s avatar" class="rounded-circle" style="width: 30px; height: 30px; width:30px;">
                 <a href="{% url 'view_profile' user.username %}" class="ml-2">{{ user.username }}</a>
               </li>
             {% endfor %}
@@ -272,7 +272,7 @@
           <ul class="list-unstyled">
             {% for profile in top_users %}
               <li class="mb-2">
-                <img src="{{ profile.avatar }}" alt="{{ profile.user.username }}'s avatar" class="rounded-circle" style="width: 30px; height: 30px;">
+                <img src="{{ profile.avatar }}" alt="{{ profile.user.username }}'s avatar" class="rounded-circle" style="width: 30px; height: 30px; width:30px">
                 <a href="{% url 'view_profile' profile.user.username %}" class="ml-2">{{ profile.user.username }}</a>
                 <span class="badge bg-primary float-end">{{profile.followers.count}} follower{{profile.followers.count|pluralize}}</span>
               </li>

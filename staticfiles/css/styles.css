@@ -1764,3 +1764,8 @@ select.form-control:not([size]):not([multiple]) {
         margin-left: -50px;
     }
 }
+@media screen and (max-width: 380px){
+    .image-form{
+        font-size: 12px;
+    }
+}
