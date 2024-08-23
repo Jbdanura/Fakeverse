@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'crispy_forms',
     'crispy_bootstrap4',
+    'corsheaders',
 ]
 
 
@@ -73,6 +74,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'fakeverse.urls'
@@ -211,3 +213,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CSRF_TRUSTED_ORIGINS = ['https://render.com','https://fakeverse.onrender.com','https://earthpress.netlify.app']
 
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
+
+CORS_ALLOWED_ORIGINS = [
+    "https://earthpress.netlify.app",
+]
