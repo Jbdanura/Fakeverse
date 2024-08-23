@@ -12,5 +12,6 @@ urlpatterns = [
     path('follow/<str:username>/', follow_unfollow, name='follow'),
     path('edit_profile', edit_profile, name='edit_profile'),
     path('edit_avatar', edit_avatar, name='edit_avatar'),
-    path('guest_login',guest_login, name="guest_login")
+    path('guest_login',guest_login, name="guest_login"),
+
 ]

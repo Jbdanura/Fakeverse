@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.template.loader import render_to_string
-
+from django.conf import settings
 from generateAI import generate
 from posts.forms import PostForm, CommentForm
 from posts.models import Post, Comment
@@ -13,7 +13,7 @@ from users.models import Profile
 import random
 from django.core.paginator import Paginator
 import cloudinary.uploader
-
+import requests
 
 def home_view(request):
 
@@ -180,3 +180,41 @@ def load_more_comments(request, post_id):
     context = {'comments': comments, 'user': request.user}
     comments_html = render_to_string('posts/comments_list.html', context)
     return JsonResponse({'comments_html': comments_html})
+
+
+
+
+
+
+
+NEWS_API_KEY = settings.NEWS_API_KEY
+def get_news(category=None):
+    base_url = "https://newsapi.org/v2/top-headlines"
+    params = {
+        "language": "en",
+        "pageSize": 50,
+        "apiKey": NEWS_API_KEY
+    }
+    if category:
+        params["category"] = category
+
+    response = requests.get(base_url, params=params)
+    response.raise_for_status()
+    return response.json()['articles']
+
+def all_news(request):
+    try:
+        articles = get_news()
+        return JsonResponse(articles, safe=False)
+    except Exception as error:
+        print(error)
+        return JsonResponse({"error": "An error occurred"}, status=500)
+
+
+def category_news(request, category):
+    try:
+        articles = get_news(category)
+        return JsonResponse(articles, safe=False)
+    except Exception as error:
+        print(error)
+        return JsonResponse({"error": "An error occurred"}, status=500)

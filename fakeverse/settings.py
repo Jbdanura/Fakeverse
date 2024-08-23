@@ -38,7 +38,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['https://render.com','https://fakeverse.onrender.com','fakeverse.onrender.com','127.0.0.1']
 
@@ -210,3 +210,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CSRF_TRUSTED_ORIGINS = ['https://render.com','https://fakeverse.onrender.com']
 
+NEWS_API_KEY = os.getenv('NEWS_API_KEY')
