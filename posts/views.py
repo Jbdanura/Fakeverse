@@ -185,36 +185,3 @@ def load_more_comments(request, post_id):
 
 
 
-
-
-NEWS_API_KEY = settings.NEWS_API_KEY
-def get_news(category=None):
-    base_url = "https://newsapi.org/v2/top-headlines"
-    params = {
-        "language": "en",
-        "pageSize": 50,
-        "apiKey": NEWS_API_KEY
-    }
-    if category:
-        params["category"] = category
-
-    response = requests.get(base_url, params=params)
-    response.raise_for_status()
-    return response.json()['articles']
-
-def all_news(request):
-    try:
-        articles = get_news()
-        return JsonResponse(articles, safe=False)
-    except Exception as error:
-        print(error)
-        return JsonResponse({"error": "An error occurred"}, status=500)
-
-
-def category_news(request, category):
-    try:
-        articles = get_news(category)
-        return JsonResponse(articles, safe=False)
-    except Exception as error:
-        print(error)
-        return JsonResponse({"error": "An error occurred"}, status=500)
