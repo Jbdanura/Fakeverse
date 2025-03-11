@@ -13,7 +13,27 @@ from django.contrib.auth import update_session_auth_hash, login
 from django.utils.safestring import mark_safe
 import cloudinary.uploader
 from generateAI import generate
-from django.contrib.auth.backends import ModelBackend  # Import the backend
+from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth import get_user_model
+import os
+
+def create_user_if_not_exists(username, password_env_var):
+    # Get the password from the environment variable
+    password = os.environ.get(password_env_var)
+    if not password:
+        raise ValueError(f"Environment variable '{password_env_var}' is not set.")
+    # get_or_create returns a tuple (object, created)
+    user, created = User.objects.get_or_create(username=username)
+    if created:
+        user.set_password(password)
+        user.save()
+        print(f"User '{username}' created.")
+    else:
+        print(f"User '{username}' already exists.")
+
+# Call the function with both arguments
+create_user_if_not_exists('machinegod', 'password_user')
+create_user_if_not_exists('guest', 'password_user')
 
 @login_required
 def view_profile(request, username):

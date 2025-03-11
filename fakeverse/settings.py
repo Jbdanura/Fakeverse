@@ -40,7 +40,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://render.com','https://fakeverse.onrender.com','fakeverse.onrender.com','127.0.0.1','https://earthpress.netlify.app']
+ALLOWED_HOSTS = ['https://render.com','https://fakeverse.onrender.com','fakeverse.onrender.com','127.0.0.1']
 
 
 # Application definition
@@ -96,7 +96,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'fakeverse.wsgi.application'
-
 
 
 
@@ -213,7 +212,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CSRF_TRUSTED_ORIGINS = ['https://render.com','https://fakeverse.onrender.com','https://earthpress.netlify.app']
 
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
-
-CORS_ALLOWED_ORIGINS = [
-    "https://earthpress.netlify.app",
-]
